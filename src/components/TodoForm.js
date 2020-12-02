@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useInputState from '../hooks/useInputState';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -11,25 +12,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BasicTextFields( { todos, setTodos } ) {
+export default function BasicTextFields( { addTodo } ) {
   const classes = useStyles();
-  const [input, setInput] = useState("");
-  
-  const handleChange = e => {
-    setInput(e.target.value);
-  };
-
-  const handleSubmit = e => {
-    if(input) {
-      setTodos([...todos, input]);
-    }
-    setInput("");
-    e.preventDefault();
-  };
+  const [value, handleChange, reset] = useInputState("");
 
   return (
-    <form className={classes.root} noValidate autoComplete="off" onSubmit={ handleSubmit }>
-      <TextField id="standard-basic" label="Add item" variant="outlined" value={ input } onChange={ handleChange } />
+    <form 
+      className={classes.root} 
+      noValidate 
+      autoComplete="off" 
+      onSubmit={e => {
+        e.preventDefault();
+        addTodo(value);
+        reset();
+      }}
+    >
+      <TextField 
+        label="Who's next?" 
+        variant="outlined" 
+        value={ value } 
+        onChange={ handleChange } 
+      />
     </form>
   );
 }

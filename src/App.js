@@ -1,12 +1,12 @@
 import React from 'react';
 import Navbar from './components/Navbar';
-import Todo from './components/Todo';
+import TodoApp from './components/TodoApp';
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <Todo />
+      <TodoApp />
     </div>
   );
 }

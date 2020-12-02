@@ -1,40 +1,46 @@
 import React, { useState } from 'react';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
-
+import useToggleState from '../hooks/useToggleState';
+import EditTodoForm from './EditTodoForm';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    marginTop: 10
-  },
-}));
-
-export default function CenteredGrid() {
-  const classes = useStyles();
-  const [todos, setTodos] = useState([]);
-  console.log(todos)
+export default function Todo( { id, task, completed, editTodo, toggleTodo, removeTodo } ) {
+  const [isEditing, toggle] = useToggleState(false);
 
   return (
-    <div className={classes.root}>
-      <Grid container  justify="center" spacing={0}>
-        <Grid item xs={11} sm={6}>
-          <Paper className={classes.paper}>
-            <TodoForm todos={todos} setTodos={setTodos} />
-          </Paper>
-          <Paper className={classes.paper}>
-            <TodoList todos={todos} />
-          </Paper>
-        </Grid>
-      </Grid>
-    </div>
+    <>
+      <ListItem>
+        {isEditing ? <EditTodoForm id={id} task={task} editTodo={editTodo} toggleEditForm={toggle} /> : 
+          <>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={completed}
+                tabIndex={-1}
+                inputProps={{ 'aria-labelledby': id }}
+                onClick={() => toggleTodo(id)}
+              />
+            </ListItemIcon>
+            <ListItemText style={{ textDecoration: completed? 'line-through' : 'none' }}>{task}</ListItemText>
+            {/* {console.log(todo.id, todo.task, todo.completed)} */}
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="delete" onClick={() => {removeTodo(id)}}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton edge="end" aria-label="edit" onClick={toggle}>
+                <EditIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </>
+        }
+      </ListItem>
+    </>
   );
 }
