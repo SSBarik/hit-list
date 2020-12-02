@@ -23,12 +23,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TodoApp() {
   const classes = useStyles();
-  const initialTodos = JSON.parse(window.localStorage.getItem("todos") || "[]");
+  const initialTodos = [{id: 1, task: "Yo Yo Yo", completed: false}];
   const { todos, addTodo, removeTodo, toggleTodo, editTodo } = useTodoState(initialTodos);
-
-  useEffect(() => {
-    window.localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
 
   
   return (
