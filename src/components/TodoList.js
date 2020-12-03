@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Todo from './Todo';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
+import { TodosContext } from '../context/todos.context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,23 +13,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TodoList( { todos, editTodo, toggleTodo, removeTodo } ) {
+export default function TodoList() {
   const classes = useStyles();
+  const { todos } = useContext(TodosContext);
+
   if(todos.length)
     return (
       <Paper>
         <List className={classes.root}>
           { todos.map((todo, i) => (
-              <>
-                <Todo 
-                  {...todo}
-                  key={todo.id}
-                  editTodo={editTodo}
-                  toggleTodo={toggleTodo}
-                  removeTodo={removeTodo}
-                />
-                {i < todos.length -1 && <Divider />}
-              </>
+            <React.Fragment key={i}>
+              <Todo {...todo} key={todo.id} />
+              {i < todos.length -1 && <Divider />}
+            </React.Fragment>
           ))}
         </List>
       </Paper>
