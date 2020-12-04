@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import useInputState from '../hooks/useInputState';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { TodosContext } from '../context/todos.context';
+import { DispatchContext } from '../context/todos.context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default function BasicTextFields() {
   const classes = useStyles();
   const [value, handleChange, reset] = useInputState("");
-  const { addTodo } = useContext(TodosContext);
+  const dispatch = useContext(DispatchContext);
 
   return (
     <form 
@@ -25,7 +25,7 @@ export default function BasicTextFields() {
       autoComplete="off" 
       onSubmit={e => {
         e.preventDefault();
-        addTodo(value);
+        dispatch({type: "ADD", task: value})
         reset();
       }}
     >

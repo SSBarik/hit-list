@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TodoList() {
   const classes = useStyles();
-  const { todos } = useContext(TodosContext);
+  const todos = useContext(TodosContext);
 
   if(todos.length)
     return (
